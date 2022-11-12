@@ -1,64 +1,90 @@
 #include<stdio.h>
 
-int main(void)
-{
-	int i, n, count = 0, flag[n], ad;
-	double pct;
-	char ans[n + 1], cans[n + 1], sec;//æ–‡å­—é…åˆ—ã«ã¯ãƒŒãƒ«æ–‡å­—ã‚‚å…¥ã‚‹ã®ã§è¦ç´ ã¯1ã¤å¤šãã™ã‚‹
-	
-	printf("\nTOEICå¯¾ç­–æ¨¡è©¦ç”¨å›ç­”ãƒ•ã‚©ãƒ¼ãƒ ã§ã™ã€‚\n");
-	printf("\nListeningï¼ˆLï¼‰ã¨Readingï¼ˆRï¼‰ã®ã©ã¡ã‚‰ã‹ã€ã¾ãŸã¯ä¸¡æ–¹ï¼ˆBï¼‰ã‚’å—é¨“ã—ã¾ã™ã‹ï¼ŸL,R,Bã®ã„ãšã‚Œã‹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ ");
-	scanf("%c", &sec);
-	if(sec == 'L'){
-		n = 100;
-		ad = 0;
-		printf("\nListeningãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚\n");
-	}else if(sec == 'B'){
-		n = 200;
-		ad = 0;
-		printf("\nListening&ReadingãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚\n");
-	}else if(sec == 'R'){
-		n = 100;
-		ad = 100;
-		printf("\nReadingãŒé¸æŠã•ã‚Œã¾ã—ãŸã€‚\n");
+//ŠÖ”‚Ìƒvƒƒgƒ^ƒCƒvéŒ¾
+int modeSelecter(int *, int *, char *);
+int answerRegister(int *, int *, char *);
+int answerChecker(int *, int *, char *, char *);
+int freeMode();
+
+int main(void){
+    int i, n, ad = 0;
+    double pct;
+    char ans[n + 1], cans[n + 1], sec;//•¶š”z—ñ‚É‚Íƒkƒ‹•¶š‚à“ü‚é‚Ì‚Å—v‘f‚Í1‚Â‘½‚­‚·‚é
+
+    printf("\nTOEIC‘Îô–Í—p‰ñ“šƒtƒH[ƒ€‚Å‚·B\n");
+    printf("\nListening(L)AReading(R)A—¼•û(M)A©—R(F)‚Ì‚¢‚¸‚ê‚©‚ÌóŒ±ƒ‚[ƒh‚ğ‘I‘ğ‚µAL,R,M,F‚Ì“à1‚Â‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\nModeF");
+    modeSelecter(&n, &ad, &sec);
+    //printf("%d %d %c", n, ad, sec);
+	printf("\n[TOEIC‰ñ“š—“]\n‰ñ“š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	answerRegister(&n, &ad, ans);////”z—ñ‚Ì[]‚ğ–³‚­‚·‚Æ”z—ñ‚ÌƒAƒhƒŒƒX‚ğ¦‚·B
+	printf("\n[TOEIC³‰ğ—“]\n³‰ğ‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+	answerRegister(&n, &ad, cans);
+	printf("\n[TOEIC³Œëó‹µ]\n");
+	answerChecker(&n, &ad, ans, cans);
+
+    return 0;
+}
+
+//ŠÖ”‚ÌÚ×‚ğ’è‹`
+int modeSelecter(int *np, int *adp, char *secp){//intŒ^ƒ|ƒCƒ“ƒ^•Ï”np‚ÍA&n‚Å‰Šú‰»‚³‚ê‚éB‚È‚¨Aƒ|ƒCƒ“ƒ^•Ï”‚ª‚Ç‚Ì•Ï”‚ÌƒAƒhƒŒƒX‚ğ¦‚·‚Ì‚©‚ğ‘O‚à‚Á‚Ä–¾Šm‚É‚·‚éi‰Šú‰»j‚Ì‚ª–]‚Ü‚µ‚¢B
+    scanf("%c", secp);//scanf‚Ìˆø”‚Í‚Ç‚ê‚àƒ|ƒCƒ“ƒ^‚Å‚È‚­‚Ä‚Í‚È‚ç‚È‚¢
+    if(*secp == 'L'){
+        *np = 100;
+        printf("\nListening‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B\n");
+    }else if(*secp == 'M'){
+        *np = 200;
+        printf("\nLisetning&Reading‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B\n");
+    }else if(*secp == 'R'){
+        *np = 100;
+        *adp = 100;
+        printf("\nReading‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½B\n");
+    }else if(*secp == 'F'){
+		printf("\nŠJn‚·‚é–â‘è”Ô†‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\nNo.");
+		scanf("%d", adp);
+		*adp = *adp - 1;
+        *np = 200 - *adp;
 	}else{
-		printf("\nERROR!\n");
+		printf("\n•s³‚È•¶š‚Å‚·B‚à‚¤ˆê“xL,R,M,F‚Ì‚¢‚¸‚ê‚©‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B %c", *secp);
+        modeSelecter(np, adp, secp);
 		return 1;
-	}
-	printf("\n[TOEICå›ç­”æ¬„]\nå›ç­”ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n");
-	for(int i = 0; i < n; i++){
-		printf("No%d ", i + 1 + ad);//å¤‰
-		scanf("%s", &ans[i]);//æ–‡å­—é…åˆ—ã§ã‚‚æ•´æ•°é…åˆ—ã®ã‚ˆã†ã«1è¦ç´ ãšã¤å…¥åŠ›ã™ã‚‹å ´åˆã¯&ã‚’ä»˜ã‘ã‚‹ã€‚&ãŒãªã„ã¨ãã¯å…¨è¦ç´ ã‚’ä¸€æ°—ã«å…¥åŠ›ã§ãã‚‹ã€‚
-		while(ans[i] < 97 || 100 < ans[i]){
-			printf("ï½ï½ï½„ã®ã„ãšã‚Œã‹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n");
-			printf("No%d ", i + 1 + ad);//å¤‰
-			scanf("%s", &ans[i]);//æ–‡å­—é…åˆ—ã¯æ–‡å­—åˆ—ã ã‹ã‚‰å…¥åŠ›ã«ã¯%sã‚’ä½¿ã†
+    }
+    return 0;
+}
+
+int freeMode(){
+	return 0;
+}
+
+int answerRegister(int *np, int *adp, char *ansp){
+	int i;
+
+	for(int i = 0; i < *np; i++){
+		printf("No.%d ", i + 1 + *adp);
+		scanf("%s", &ansp[i]);
+		while(ansp[i] < 97 || 100 < ansp[i]){
+			printf("a`b‚Ì‚¢‚¸‚ê‚©‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B\n");
+			printf("No.%d ", i + 1 + *adp);
+			scanf("%s", &ansp[i]);
 		}
 	}
-	printf("\n[TOEICæ­£è§£æ¬„]\næ­£è§£ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n");
-	for(int i = 0; i < n; i++){
-		printf("No%d ", i + 1 + ad);//å¤‰
-		scanf("%s", &cans[i]);
-		while(cans[i] < 97 || 100 < cans[i]){
-			printf("ï½ï½ï½„ã®ã„ãšã‚Œã‹ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n");
-			printf("No%d ", i + 1 + ad);//å¤‰
-			scanf("%s", &cans[i]);
-		}
-	}
-	printf("\n[TOEICæ­£èª¤æ¬„]\nã‚ãªãŸã®å›ç­”ã®æ­£èª¤çŠ¶æ³ã§ã™ã€‚\n");
-	for(int i = 0; i < n; i++){
-		printf("No%d ", i + 1 + ad);//å¤‰
-		if(cans[i] == ans[i]){
-			printf("â—‹\n");
-			flag[i] = 1;
+	return 0;
+}
+
+int answerChecker(int *np, int *adp, char *ansp1, char *ansp2){
+	int i, count = 0;
+	double pct;
+
+	for(int i = 0; i < *np; i++){
+		printf("No.%d ", i + 1 + *adp);
+		if(ansp1[i] == ansp2[2]){
+			printf("›\n");
+			count++;
 		}else{
-			printf("x\n");
-			flag[i] = 0;
+			printf("~\n");
 		}
-		count = count + flag[i];
 	}
-	pct = (double) count / n * 100;
-	printf("\nã‚ãªãŸã®æ­£è§£æ•°ã¯ã€Œ%då•ä¸­%då•ã€ã€æ­£è§£ç‡ã€Œ%.2f%ã€ã§ã™ã€‚\n", n, count, pct);
-	
+	pct = (double) count / (*np) * 100;
+	printf("\n‚ ‚È‚½‚Ì³‰ğ”‚Íu%d–â’†%d–âvA³‰ğ—¦u%.2f%v‚Å‚·B\n", *np, count, pct);
+
 	return 0;
 }
